@@ -1,16 +1,17 @@
+import { ERoutesNames } from "@utils/routes-name";
+import Layout from "@views/layout";
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "../views/layout";
 
 export const routes = createBrowserRouter([
   {
     element: <Layout />,
     children: [
       {
-        path: "/",
+        path: ERoutesNames.HOME,
         element: <div>home</div>,
       },
       {
-        path: "profile",
+        path: ERoutesNames.PROFILE,
         element: <div>profile</div>,
       },
     ],
