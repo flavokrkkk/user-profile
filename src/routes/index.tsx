@@ -1,6 +1,8 @@
+import { HomePage } from "@pages/home-page";
+import { ProfilePage } from "@pages/profile-page";
 import { ERoutesNames } from "@utils/routes-name";
-import Layout from "@views/layout";
-import { createBrowserRouter } from "react-router-dom";
+import { Layout } from "@views/layout";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 export const routes = createBrowserRouter([
   {
@@ -8,11 +10,15 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: ERoutesNames.HOME,
-        element: <div>home</div>,
+        element: <HomePage />,
       },
       {
-        path: ERoutesNames.PROFILE,
-        element: <div>profile</div>,
+        path: ERoutesNames.PROFILE_DEATILS,
+        element: <ProfilePage />,
+      },
+      {
+        path: ERoutesNames.CATCH_ALL,
+        element: <Navigate to={ERoutesNames.HOME} replace />,
       },
     ],
   },
