@@ -11,8 +11,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 export const HomePage = () => {
   const { users, isLoading } = useAppSelector(userSelector);
-  const { addUser } = useActions();
+  const { addUser, addNotificate } = useActions();
   const [isVisible, setIsVisible] = useState(false);
+
   const [archived, active] = useMemo(() => {
     const archived = users.filter((user) => user.isArchived);
     const active = users.filter((user) => !user.isArchived);
@@ -25,11 +26,20 @@ export const HomePage = () => {
     resetField,
     reset,
     watch,
-    formState: { dirtyFields, errors },
+    formState: { errors },
   } = useForm<IUser>({});
 
   const onSubmit: SubmitHandler<IUser> = (data, event) => {
     addUser(data);
+    addNotificate({
+      id: Date.now(),
+      date: new Date().toISOString(),
+      isRead: false,
+      description:
+        "Вы добавили нового пользователя в свою команду, ему тоже придет письмо!",
+    });
+    reset();
+    setIsVisible(false);
   };
 
   const handleVisibleModal = useCallback(() => {
