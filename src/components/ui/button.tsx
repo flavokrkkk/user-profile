@@ -18,7 +18,7 @@ interface IButtonClasses {
 export const ButtonColorClasses: { [key in ButtonColors]: IButtonClasses } = {
   [ButtonColors.BLACK]: {
     activeClasses: "bg-black-100",
-    disableClasses: "bg-transparent border border-black-100",
+    disableClasses: "bg-gray-200",
   },
 };
 

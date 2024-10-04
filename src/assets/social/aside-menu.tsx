@@ -1,8 +1,14 @@
-export const AsideMenuOutlined = () => {
+import { FC } from "react";
+
+interface AsideMenuOutlined {
+  size?: number;
+}
+
+export const AsideMenuOutlined: FC<AsideMenuOutlined> = ({ size = 24 }) => {
   return (
     <svg
-      width="24"
-      height="25"
+      width={size}
+      height={size}
       viewBox="0 0 24 25"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
@@ -16,8 +22,8 @@ export const AsideMenuOutlined = () => {
       <defs>
         <clipPath id="clip0_11_6806">
           <rect
-            width="24"
-            height="24"
+            width={size}
+            height={size}
             fill="currentColor"
             transform="translate(0 0.5)"
           />

@@ -1,5 +1,6 @@
 import { ArrowOutlined } from "@assets/social/arrow";
 import { SuccessOutlined } from "@assets/social/success";
+import { Loader } from "@components/ui/loader";
 import Modal from "@components/ui/modal";
 import { UserDetails } from "@components/user-details";
 import { UserForm } from "@components/user-form";
@@ -24,7 +25,7 @@ export const ProfilePage = () => {
   const handleBackToMain = () => {
     navigate(ERoutesNames.HOME);
   };
-
+  console.log(users);
   useEffect(() => {
     if (users.length && id) {
       const findLessonById = users.findIndex((user) => user.id === +id);
@@ -37,7 +38,7 @@ export const ProfilePage = () => {
   }, [user, users.length]);
 
   return users.length && user ? (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full p-4 md:p-0">
       <div
         className="flex items-center mt-4 cursor-pointer"
         onClick={handleBackToMain}
@@ -45,9 +46,9 @@ export const ProfilePage = () => {
         <ArrowOutlined />
         Назад
       </div>
-      <section className="w-full mt-6 flex space-y-10 md:space-y-0 flex-col md:flex-row md:space-x-10">
+      <section className="w-full mt-2 md:mt-6 flex space-y-10 md:space-y-0 flex-col md:flex-row md:space-x-10">
         <UserDetails user={user} />
-        <div className="border w-full p-10 h-full rounded-xl bg-white-100">
+        <div className="w-full shadow-sm p-10 h-full rounded-xl bg-white-100">
           <h1 className="text-2xl mb-3">Данные профиля</h1>
           <hr />
           <UserForm user={user} onOpen={handleModalVisible} />
@@ -61,18 +62,6 @@ export const ProfilePage = () => {
       </Modal>
     </div>
   ) : (
-    <div
-      className={
-        "h-min-80 absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center"
-      }
-    >
-      <div
-        className="text-blue-600 inline-block size-10 animate-spin rounded-full border-[3px] border-gray-300 border-t-transparent dark:text-blue-500"
-        role="status"
-        aria-label="loading"
-      >
-        <span className="sr-only">Loading...</span>
-      </div>
-    </div>
+    <Loader />
   );
 };

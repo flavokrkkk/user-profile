@@ -17,7 +17,7 @@ export const Layout = () => {
       <Header>
         <HeaderContent />
       </Header>
-      <section className="mx-auto flex max-w-[1160px] min-h-[93.5vh] ">
+      <section className="mx-auto flex md:max-w-[1160px] min-h-[93.5vh] ">
         <Outlet />
       </section>
     </div>

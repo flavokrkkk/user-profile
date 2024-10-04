@@ -1,6 +1,7 @@
 import { IUser } from "@models/IUser";
 import { FC } from "react";
 import bigSizePhoto from "../../public/avatarka-big.png";
+import responsiveAva from "../../public/responsiveAva.png";
 
 interface IUserDetails {
   user: IUser;
@@ -8,9 +9,10 @@ interface IUserDetails {
 
 export const UserDetails: FC<IUserDetails> = ({ user }) => {
   return (
-    <div className="border md:w-[400px] h-full rounded-xl bg-white-100 p-10 space-y-[47px]">
+    <div className="md:w-[400px] shadow-sm h-full rounded-xl bg-white-100 p-10 space-y-[47px]">
       <div className=" rounded-xl">
-        <img src={bigSizePhoto} />
+        <img src={bigSizePhoto} className="hidden md:block" />
+        <img src={responsiveAva} className="block md:hidden" />
       </div>
       <section className="flex flex-col space-y-4">
         <div className="border-b pb-2 font-medium">Данные профиля</div>

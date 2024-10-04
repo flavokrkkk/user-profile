@@ -1,3 +1,4 @@
+import { Loader } from "@components/ui/loader";
 import { useAppSelector } from "@hooks/useAppSelector";
 import { userSelector } from "@redux/selectors";
 import { UserContentLayout } from "@views/user-content-layout";
@@ -12,25 +13,10 @@ export const HomePage = () => {
     return [archived, active];
   }, [users]);
 
-  if (isLoading)
-    return (
-      <div
-        className={
-          "h-min-80 absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center"
-        }
-      >
-        <div
-          className="text-blue-600 inline-block size-10 animate-spin rounded-full border-[3px] border-gray-300 border-t-transparent dark:text-blue-500"
-          role="status"
-          aria-label="loading"
-        >
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
+  if (isLoading) return <Loader />;
 
   return (
-    <section className="text-black-100 mt-7 w-full flex flex-col space-y-8 mb-10">
+    <section className="text-black-100 mt-7 w-full flex flex-col space-y-8 mb-10 p-4 md:p-0">
       <UserContentLayout title="Активные" users={active} />
       <UserContentLayout title="Архив" users={archived} />
     </section>

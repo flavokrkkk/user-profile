@@ -1,125 +1,158 @@
 import { AsideMenuOutlined } from "@assets/social/aside-menu";
 import { IUser } from "@models/IUser";
-import { FC, useCallback, useState } from "react";
-import Tooltipe from "./ui/tooltip";
+import { FC, useCallback, useMemo, useState } from "react";
+import Tooltipe, { TooltipePosition } from "./ui/tooltip";
 import { useNavigate } from "react-router-dom";
 import { ERoutesNames } from "@utils/routes-name";
 import { useActions } from "@hooks/useActions";
 import noPhotoUser from "../../public/avatarka-mock.png";
 import clsx from "clsx";
+import ControlPanel from "./control-panel";
 
 export interface IUserList {
   user: IUser;
   isVisible: boolean;
-  onTooltipToggle: (userId: number | string) => void;
+  handleDragStart: (e: React.DragEvent<HTMLDivElement>, user: IUser) => void;
+  handleDragEnd: (
+    e: React.DragEvent<HTMLDivElement>,
+    callback: () => void
+  ) => void;
+  onTooltipToggle: (userId: number | string | boolean) => void;
 }
 
 export const UserList: FC<IUserList> = ({
   user,
   isVisible,
+  handleDragEnd,
+  handleDragStart,
   onTooltipToggle,
 }) => {
   const { setArchivedUser, setOnHideUser, setSelectUser, addNotificate } =
     useActions();
   const navigate = useNavigate();
 
-  const handleNavigateEditUser = () => {
+  const notificate = useMemo(() => {
+    const notificate = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      isRead: false,
+    };
+    return notificate;
+  }, [user.isArchived]);
+
+  const handleNavigateEditUser = useCallback(() => {
     setSelectUser(user);
     navigate(`${ERoutesNames.PROFILE}/${user.id}`);
-  };
+  }, []);
 
-  const handleArchivedUser = () => {
+  const handleOpenTooltip = () => onTooltipToggle(user.id!);
+
+  const handleArchivedUser = useCallback(() => {
+    onTooltipToggle(false);
     setArchivedUser(user.id!);
     if (user.isArchived) {
       addNotificate({
-        id: Date.now(),
-        date: new Date().toISOString(),
+        ...notificate,
         description: "Вы добавили пользователя в актив!",
-        isRead: false,
       });
     } else {
       addNotificate({
-        id: Date.now(),
-        date: new Date().toISOString(),
+        ...notificate,
         description: "Вы добавили пользователя в архив!",
-        isRead: false,
       });
     }
-  };
+  }, []);
 
-  const handleOnHideUser = () => {
+  const handleOnHideUser = useCallback(() => {
     setOnHideUser(user.id!);
     addNotificate({
-      id: Date.now(),
-      date: new Date().toISOString(),
+      ...notificate,
       description: "Вы скрыли пользователя!",
-      isRead: false,
     });
-  };
+  }, []);
 
   return (
-    <div>
-      <div
-        className={"h-full rounded-xl p-6 bg-white-100 justify-between flex"}
-        key={user.id}
-      >
-        <section className="flex space-y-2 md:space-y-0 flex-col md:flex-row h-full md:space-x-5">
-          <div className="w-[130px] h-[100px] rounded-xl flex justify-center">
-            {user.photo ? (
-              user.photo
-            ) : (
-              <img src={noPhotoUser} className="rounded-xl" />
-            )}
-          </div>
-          <div className="w-full h-full flex flex-col justify-between">
-            <section>
+    <div
+      onDragStart={(e) => handleDragStart(e, user)}
+      onDragEnd={(e) => handleDragEnd(e, handleArchivedUser)}
+      draggable
+      className={clsx(
+        "h-auto w-full hover:scale-105  transition duration-300 ease-in-out   max-w-[280px] md:max-w-[320px] lg:max-w-[360px] cursor-pointer rounded-2xl p-4 bg-white shadow-md flex flex-col justify-between",
+        user.isArchived ? "bg-gray-200" : "bg-white-100"
+      )}
+      key={user.id}
+    >
+      <section className="flex space-y-4 md:space-x-4 w-full h-auto flex-col md:flex-row">
+        <div className="w-full md:w-[100px] h-[100px] md:h-[100px] flex-shrink-0 rounded-lg overflow-hidden">
+          {user.photo ? (
+            <img
+              src={user.photo}
+              alt="User Photo"
+              className="object-cover w-full h-full rounded-lg"
+            />
+          ) : (
+            <img
+              src={noPhotoUser}
+              alt="No Photo Available"
+              className={clsx(
+                "object-cover w-full h-full rounded-lg filter transition duration-300 ease-in-out hover:blur-md",
+                user.isArchived && "blur-md"
+              )}
+            />
+          )}
+        </div>
+
+        <div className="flex-1 flex flex-col justify-between">
+          <div className="flex justify-between items-start">
+            <div className="flex-1 min-w-0">
               <h1
                 className={clsx(
-                  "text-xl text-blue-400",
+                  "text-lg font-semibold text-blue-400 truncate line-clamp-1 w-[79px]",
                   user.isArchived && "text-gray-600"
                 )}
               >
-                {user.name}
+                {user.username}
               </h1>
-              <h2 className={clsx("", user.isArchived && "text-gray-300")}>
+              <h2
+                className={clsx(
+                  "text-sm truncate line-clamp-1 w-[80px]",
+                  user.isArchived && "text-gray-300"
+                )}
+              >
                 {user.company.name}
               </h2>
-            </section>
-            <div
-              className={clsx(
-                "text-sm text-gray-300",
-                user.isArchived && "text-gray-200"
-              )}
-            >
-              {user.address.city}
+            </div>
+            <div className="relative flex-shrink-0">
+              <Tooltipe
+                key={user.id}
+                placement={TooltipePosition.LEFT}
+                content={
+                  <ControlPanel
+                    isArchived={user.isArchived}
+                    handleOnHideUser={handleOnHideUser}
+                    handleArchivedUser={handleArchivedUser}
+                    handleNavigateEditUser={handleNavigateEditUser}
+                  />
+                }
+                isVisible={isVisible}
+                setVisible={handleOpenTooltip}
+              >
+                <span className="hover:text-blue-400">
+                  <AsideMenuOutlined size={20} />
+                </span>
+              </Tooltipe>
             </div>
           </div>
-        </section>
-        <div className="cursor-pointer relative">
-          <Tooltipe
-            key={user.id}
-            content={
-              <div className="bg-white-100 flex flex-col space-y-2">
-                <button className="text-start" onClick={handleNavigateEditUser}>
-                  Редактировать
-                </button>
-                <button className="text-start" onClick={handleArchivedUser}>
-                  {user.isArchived ? "Активировать" : "Архивировать"}
-                </button>
-                <button className="text-start" onClick={handleOnHideUser}>
-                  Скрыть
-                </button>
-              </div>
-            }
-            isVisible={isVisible}
-            setVisible={() => onTooltipToggle(user.id!)}
+          <div
+            className={clsx(
+              "text-sm text-gray-500 truncate",
+              user.isArchived && "text-gray-200"
+            )}
           >
-            <span className="hover:text-blue-400">
-              <AsideMenuOutlined />
-            </span>
-          </Tooltipe>
+            <h3 className="line-clamp-1 w-[40px]">{user.address.city}</h3>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

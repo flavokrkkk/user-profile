@@ -25,8 +25,12 @@ const Tooltipe: FC<ITooltipe> = ({
   const tooltipeRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [tooltipPlacement, setTooltipePlacement] = useState({
+  const [tooltipPlacement, setTooltipePlacement] = useState<{
+    right?: number;
+    left?: number;
+  }>({
     left: 0,
+    right: 0,
   });
 
   const handleTooltipePlacement = () => {
@@ -37,6 +41,11 @@ const Tooltipe: FC<ITooltipe> = ({
             -(
               tooltipeRef.current.offsetWidth - contentRef.current.offsetWidth
             ) / 2,
+        });
+      }
+      if (placement === TooltipePosition.LEFT) {
+        setTooltipePlacement({
+          right: 0,
         });
       }
     }
