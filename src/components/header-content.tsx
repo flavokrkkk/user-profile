@@ -5,8 +5,10 @@ import { NotificateOutlined } from "@assets/social/notificate";
 import { useActions } from "@hooks/useActions";
 import { useAppSelector } from "@hooks/useAppSelector";
 import { notificationSelector } from "@redux/selectors";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { NotificationPanel } from "./notification-panel";
+import { useNavigate } from "react-router-dom";
+import { ERoutesNames } from "@utils/routes-name";
 
 export const HeaderContent = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -14,10 +16,16 @@ export const HeaderContent = () => {
   const { notification } = useAppSelector(notificationSelector);
   const { readNotification } = useActions();
 
+  const navigate = useNavigate();
+
   const notificationNoRead = useMemo(
     () => notification.filter((notificate) => !notificate.isRead).length,
     [notification]
   );
+
+  const handleNavigateToReports = () => {
+    navigate(ERoutesNames.REPORTS);
+  };
 
   const onOpenNotificationPanel = () => {
     readNotification();
@@ -36,7 +44,10 @@ export const HeaderContent = () => {
       </section>
 
       <section className="flex items-center space-x-3">
-        <span className="hidden md:block">
+        <span
+          className="hidden md:block cursor-pointer"
+          onClick={handleNavigateToReports}
+        >
           <HeartOutlined />
         </span>
         <section

@@ -64,7 +64,7 @@ export const HomePage = () => {
       </section>
       <Modal isOpen={isVisible} isBadge={false} onClose={handleVisibleModal}>
         <div className="mx-10 w-[300px] md:w-[430px] mb-4">
-          <h2> Добавление пользователя</h2>
+          <h2 className="text-center text-xl"> Добавление пользователя</h2>
           <ReuseUserForm
             resetField={resetField}
             type="create"

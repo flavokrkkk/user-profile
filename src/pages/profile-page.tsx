@@ -25,7 +25,7 @@ export const ProfilePage = () => {
   const handleBackToMain = () => {
     navigate(ERoutesNames.HOME);
   };
-  console.log(users);
+
   useEffect(() => {
     if (users.length && id) {
       const findLessonById = users.findIndex((user) => user.id === +id);

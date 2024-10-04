@@ -1,4 +1,4 @@
-import React, { FC, HTMLAttributes, ReactElement } from "react";
+import React, { FC, HTMLAttributes } from "react";
 import { memo } from "react";
 
 export enum ButtonSizes {

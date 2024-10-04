@@ -1,6 +1,6 @@
 import { INotification } from "@redux/reducers/notification-slice";
 import clsx from "clsx";
-import React, { FC } from "react";
+import { FC } from "react";
 import { DateBadge } from "./date-badge";
 
 interface INotificationList {
