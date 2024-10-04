@@ -14,7 +14,7 @@ import { isBoolean } from "util";
 
 interface IReuseUserForm {
   type: "edit" | "create";
-  errors: FieldErrors<IUser>;
+  errors: any;
   isDisabled?: boolean;
   isEditForm?: boolean;
   resetField: (value: EFormKeys) => void;
