@@ -36,11 +36,11 @@ export const HeaderContent = () => {
       </section>
 
       <section className="flex items-center space-x-3">
-        <span>
+        <span className="hidden md:block">
           <HeartOutlined />
         </span>
         <section
-          className="relative cursor-pointer"
+          className="relative cursor-pointer hidden md:block"
           onClick={onOpenNotificationPanel}
         >
           {!!notificationNoRead && (
@@ -54,7 +54,7 @@ export const HeaderContent = () => {
           <span className="cursor-pointer">
             <UserOutlined />
           </span>
-          <h2 className="hidden sm:block">Ivan2005</h2>
+          <h2 className="hidden sm:block">Admin</h2>
         </div>
       </section>
       <NotificationPanel isVisible={isVisible} setIsVisible={setIsVisible} />

@@ -6,17 +6,18 @@ import { FC } from "react";
 interface IModal {
   children: React.ReactNode;
   isOpen: boolean;
+  isBadge: boolean;
   onClose: () => void;
 }
 
-const Modal: FC<IModal> = ({ children, isOpen, onClose }) => {
+const Modal: FC<IModal> = ({ children, isOpen, onClose, isBadge }) => {
   const changeModalContent = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     event.stopPropagation();
   };
 
-  useAutoDismiss(isOpen, onClose, 4000);
+  isBadge && useAutoDismiss(isOpen, onClose, 4000);
 
   return (
     <div

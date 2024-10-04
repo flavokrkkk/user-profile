@@ -6,9 +6,14 @@ import { FC, useState } from "react";
 interface IUserContentLayout {
   title: string;
   users: IUser[];
+  setVisible: () => void;
 }
 
-export const UserContentLayout: FC<IUserContentLayout> = ({ title, users }) => {
+export const UserContentLayout: FC<IUserContentLayout> = ({
+  title,
+  users,
+  setVisible,
+}) => {
   const [activeTooltip, setActiveTooltip] = useState<number | null>(null);
   const [currentUser, setCurrentUser] = useState<IUser>({} as IUser);
 
@@ -32,7 +37,7 @@ export const UserContentLayout: FC<IUserContentLayout> = ({ title, users }) => {
   };
   return (
     <div className="w-full">
-      <h1 className="text-2xl mb-5">{title}</h1>
+      <h1 className="text-2xl mb-4 font-semibold">{title}</h1>
       <hr />
       {users.length ? (
         <div className="flex flex-col items-center space-y-3 xs:space-y-0 xs:grid xs:grid-cols-2 md:grid-cols-3 xs:gap-8 mt-7">
@@ -56,6 +61,7 @@ export const UserContentLayout: FC<IUserContentLayout> = ({ title, users }) => {
           <Button
             type={ButtonTypes.BUTTON}
             className="text-xs border w-full md:w-auto flex justify-center border-white-100 hover:bg-white-100 hover:text-black-100 hover:border hover:border-black-100"
+            onClick={setVisible}
           >
             Добавить пользователя
           </Button>

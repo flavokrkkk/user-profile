@@ -6,6 +6,7 @@ import { Button, ButtonTypes } from "./ui/button";
 import clsx from "clsx";
 import { Input } from "./input";
 import { formKeysData, formKeysTitle } from "@utils/form-keys";
+import ReuseUserForm from "./reuse-user-form";
 
 interface IUserForm {
   user: IUser;
@@ -67,66 +68,19 @@ export const UserForm: FC<IUserForm> = ({ user, onOpen }) => {
 
   useEffect(() => {
     handleDisableButton();
-  }, [formKeysData.map((el) => watch("name"))]);
+  }, [formKeysData.map((el) => watch(el))]);
 
   return (
-    <form
-      className="mt-4 max-w-[420px] flex flex-col space-y-8"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <section className="flex flex-col space-y-5">
-        {formKeysData.map((value) => (
-          <div className="flex flex-col space-y-3">
-            <span className="font-semibold">{formKeysTitle[value]}</span>
-            <Input
-              key={value}
-              isEdit={isEditForm}
-              onClick={() => resetField(value)}
-              disabled={!isEditForm}
-              className="rounded-3xl border-none"
-              validate={register(value, {
-                required: "This field is required",
-              })}
-            />
-            {!!errors[value]?.message && (
-              <h1 className="text-red-700 text-sm">{errors[value]?.message}</h1>
-            )}
-          </div>
-        ))}
-      </section>
-      <div>
-        {isEditForm ? (
-          <div className="flex space-x-3">
-            <Button
-              type={ButtonTypes.SUBMIT}
-              isDisabled={isDisabled}
-              className={clsx(
-                "text-xs ",
-                isDisabled
-                  ? "text-gray-400"
-                  : "border border-white-100 hover:bg-white-100 hover:text-black-100 hover:border hover:border-black-100"
-              )}
-            >
-              Сохранить
-            </Button>
-            <Button
-              type={ButtonTypes.BUTTON}
-              onClick={handleEditForm}
-              className="text-xs border border-white-100 hover:bg-white-100 hover:text-black-100 hover:border hover:border-black-100"
-            >
-              Назад
-            </Button>
-          </div>
-        ) : (
-          <Button
-            type={ButtonTypes.BUTTON}
-            onClick={handleEditForm}
-            className="text-xs border w-full md:w-auto flex justify-center border-white-100 hover:bg-white-100 hover:text-black-100 hover:border hover:border-black-100"
-          >
-            Изменить
-          </Button>
-        )}
-      </div>
-    </form>
+    <ReuseUserForm
+      type="edit"
+      errors={errors}
+      handleEditForm={handleEditForm}
+      handleSubmit={handleSubmit}
+      isDisabled={isDisabled}
+      isEditForm={isEditForm}
+      onSubmit={onSubmit}
+      register={register}
+      resetField={resetField}
+    />
   );
 };

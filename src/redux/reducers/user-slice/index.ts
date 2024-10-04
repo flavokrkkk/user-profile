@@ -29,6 +29,9 @@ export const userSlice = createSliceWithThunks({
   name: "user-slice",
   initialState,
   reducers: (create) => ({
+    addUser: create.reducer((state, { payload }: PayloadAction<IUser>) => {
+      state.users.push({ ...payload, id: Date.now() });
+    }),
     setArchivedUser: create.reducer(
       (state, { payload }: PayloadAction<number>) => {
         const findUser = state.users.findIndex((user) => user.id === payload);

@@ -48,13 +48,13 @@ export const ProfilePage = () => {
       </div>
       <section className="w-full mt-2 md:mt-6 flex space-y-10 md:space-y-0 flex-col md:flex-row md:space-x-10">
         <UserDetails user={user} />
-        <div className="w-full shadow-sm p-10 h-full rounded-xl bg-white-100">
-          <h1 className="text-2xl mb-3">Данные профиля</h1>
+        <div className="w-full shadow-sm p-10 h-full rounded-2xl bg-white-100">
+          <h1 className="text-xl md:text-2xl mb-3">Данные профиля</h1>
           <hr />
           <UserForm user={user} onOpen={handleModalVisible} />
         </div>
       </section>
-      <Modal isOpen={isVisible} onClose={handleModalVisible}>
+      <Modal isBadge isOpen={isVisible} onClose={handleModalVisible}>
         <section className="flex justify-center items-center flex-col px-6 pb-5">
           <SuccessOutlined />
           <p className="font-semibold">Изменения сохранены!</p>
